@@ -3,7 +3,7 @@ require_relative 'sales_manager'
 
 class Product
   attr_accessor :quantity, :item_name, :price
-  attr_accessor :sales_item
+  attr_accessor :sales_item, :calculated_sales
   attr_reader :sales_manager
 
   def initialize
@@ -11,13 +11,31 @@ class Product
     @item_name = ''
     @price = 0.0
     @sales_item = []
+    @calculated_sales = []
     @sales_manager = SalesManager.new
   end
 
   def input( sales = [] )
     return "Oops, Please provide sales." if sales.empty?
-
+    self.sales_item = sales
     display_input( sales )
+  end
+
+  def calculate_sales
+    return "Oops, No sales item." if self.sales_item.empty?
+    self.calculated_sales = sales_manager.calculate_sales( sales_item )
+  end
+
+  def print_receipt
+    return "Oops, No calculated sales." if self.calculated_sales.empty?
+
+    puts "Quantity, Product, Price"
+    calculated_sales.each do | item |
+      puts "#{item[:quantity]}, #{item[:name]}, #{item[:price]}"
+    end
+
+    # puts "Sales tax: #{calculated_sales[:total_sales_tax]}"
+    # puts "Total sales: #{calculated_sales[:total_sales]}"
   end
 
   private
@@ -27,52 +45,6 @@ class Product
     sales.each do | item |
       puts "#{item[:quantity]}, #{item[:name]}, #{item[:price]}"
     end
-  end
-
-  def validate_sales_input
-
-  end
-
-  def display_option
-    puts "Options:"
-    puts "[1] Add new product sale"
-    puts "[2] Print Reciept"
-    puts "[3] Print Reciept and Exit"
-    option( gets.chomp )
-  end
-
-  def option( choosen_option )
-    case choosen_option.to_i
-    when 1
-      input
-    when 2
-      calculated_sales = sales_manager.calculate_sales( sales_item )
-      print_receipt( calculated_sales )
-    when 3
-      # Exit terminal
-    else
-
-    end
-  end
-
-  def add_sales_item
-    self.sales_item.push({
-      quantity: quantity.to_i,
-      product: item_name,
-      price: price.to_f
-    })
-  end
-
-
-
-  def print_receipt( calculated_sales )
-    puts "Quantity, Product, Price"
-    calculated_sales[:product].each do | item |
-      puts "#{item[:quantity]}, #{item[:product]}, #{item[:price]}"
-    end
-
-    puts "Sales tax: #{calculated_sales[:total_sales_tax]}"
-    puts "Total sales: #{calculated_sales[:total_sales]}"
   end
 end
 
@@ -90,4 +62,4 @@ sales_input_1 = [ {
   price: 0.85
 } ]
 
-# Product.new.input( sales_input_1 )
+Product.new.input( sales_input_1 )

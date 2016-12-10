@@ -15,7 +15,7 @@ class TaxManager
 
   def calculate_product_tax( products = [] )
     products.each do | product |
-      self.item_name = product[:product]
+      self.item_name = product[:name]
       product.merge!( calculate_basic_tax( product ) ) unless basic_non_taxable?
       product.merge!( calculate_imported_tax( product ) ) if imported_taxable?
 
