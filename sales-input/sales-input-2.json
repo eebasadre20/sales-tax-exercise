@@ -1,0 +1,9 @@
+[ {
+  quantity: 1,
+  item: "Imported box of chocolates",
+  price: 10.00
+}, {
+  quantity: 1,
+  item: "Imported bottle of perfume",
+  price: 47.50
+} ]

@@ -1,39 +1,41 @@
 require 'pry'
 require_relative 'sales_manager'
 
-class SalesDashboard
-  attr_accessor :quantity, :product_name, :price
-  attr_accessor :sales_input
+class Product
+  attr_accessor :quantity, :item_name, :price
+  attr_accessor :sales_item
   attr_reader :sales_manager
 
   def initialize
     @quantity = 0
-    @product_name = ''
+    @item_name = ''
     @price = 0.0
-    @sales_input = []
+    @sales_item = []
     @sales_manager = SalesManager.new
   end
 
-  def input
-    puts "Quantity: "
-    self.quantity = gets.chomp
+  def input( sales = [] )
+    return "Oops, Please provide sales." if sales.empty?
 
-    puts "Product name: "
-    self.product_name = gets.chomp
-
-    puts "Price: "
-    self.price = gets.chomp
-
-    # Display options
-    set_sales
-    display_option
+    display_input( sales )
   end
 
   private
 
+  def display_input( sales )
+    puts "Quantity, Product, Price"
+    sales.each do | item |
+      puts "#{item[:quantity]}, #{item[:name]}, #{item[:price]}"
+    end
+  end
+
+  def validate_sales_input
+
+  end
+
   def display_option
     puts "Options:"
-    puts "[1] Add new product sales"
+    puts "[1] Add new product sale"
     puts "[2] Print Reciept"
     puts "[3] Print Reciept and Exit"
     option( gets.chomp )
@@ -44,7 +46,7 @@ class SalesDashboard
     when 1
       input
     when 2
-      calculated_sales = sales_manager.calculate_sales( sales_input )
+      calculated_sales = sales_manager.calculate_sales( sales_item )
       print_receipt( calculated_sales )
     when 3
       # Exit terminal
@@ -53,13 +55,15 @@ class SalesDashboard
     end
   end
 
-  def set_sales
-    sales_input << {
+  def add_sales_item
+    self.sales_item.push({
       quantity: quantity.to_i,
-      product: product_name,
+      product: item_name,
       price: price.to_f
-    }
+    })
   end
+
+
 
   def print_receipt( calculated_sales )
     puts "Quantity, Product, Price"
@@ -72,4 +76,18 @@ class SalesDashboard
   end
 end
 
-SalesDashboard.new.input
+sales_input_1 = [ {
+  quantity: 1,
+  name: "Music CD",
+  price: 14.99
+}, {
+  quantity: 1,
+  name: "Book",
+  price: 12.49
+}, {
+  quantity: 1,
+  name: "Chocolate Bar",
+  price: 0.85
+} ]
+
+# Product.new.input( sales_input_1 )
