@@ -2,14 +2,10 @@ require 'pry'
 require_relative 'sales_manager'
 
 class Product
-  attr_accessor :quantity, :item_name, :price
   attr_accessor :sales_item, :calculated_sales
   attr_reader :sales_manager
 
   def initialize
-    @quantity = 0
-    @item_name = ''
-    @price = 0.0
     @sales_item = []
     @calculated_sales = []
     @sales_manager = SalesManager.new
@@ -34,8 +30,9 @@ class Product
       puts "#{item[:quantity]}, #{item[:name]}, #{item[:price]}"
     end
 
-    # puts "Sales tax: #{calculated_sales[:total_sales_tax]}"
-    # puts "Total sales: #{calculated_sales[:total_sales]}"
+
+    puts "Sales tax: #{sales_manager.total_sales_tax}"
+    puts "Total sales: #{sales_manager.total_sales}"
   end
 
   private

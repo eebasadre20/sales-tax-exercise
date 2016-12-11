@@ -10,16 +10,18 @@ class SalesManager
   end
 
   def calculate_sales( item = [] )
+    return "Oops, Item to be calculate is empty." if item.empty?
     calculated_sales_item.push( tax_manager.calculate_product_tax( item ) ).flatten!
+    calculated_sales_item
   end
 
-  private
-
   def total_sales_tax
-    sales_output.map{ |product|  product[:sales_tax] }.inject(:+)
+    return "Oops, Item is not yet calculated" if calculated_sales_item.empty?
+    calculated_sales_item.map{ |product|  product[:sales_tax] }.inject(:+)
   end
 
   def total_sales
-    sales_output.map{ |product| product[:price_with_tax] }.inject(:+)
+    return "Oops, Item is not yet calculated" if calculated_sales_item.empty?
+    calculated_sales_item.map{ |product| product[:price_with_tax] }.inject(:+)
   end
 end

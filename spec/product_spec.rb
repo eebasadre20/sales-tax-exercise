@@ -60,7 +60,7 @@ RSpec.describe Product do
     end
   end
 
-  describe '#print_receipt' do
+  fdescribe '#print_receipt' do
     let( :calculated_sales_output ) { [
       {:quantity=>1, :name=>"Book", :price=>12.49, :sales_tax=>1.249, :price_with_tax=>13.739},
       {:quantity=>1, :name=>"music cd", :price=>14.99, :sales_tax=>1.499, :price_with_tax=>16.489},
@@ -74,6 +74,7 @@ RSpec.describe Product do
       end
 
       it "return print the calculated sales" do
+        binding.pry
         expect( product.print_receipt ).to eq( calculated_sales_output )
       end
     end
